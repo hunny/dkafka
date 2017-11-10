@@ -12,10 +12,11 @@ public class AboutController {
 
   @Autowired
   private AboutService aboutService;
-  
-  @RequestMapping(value = {"/about"}, method = RequestMethod.GET)
+
+  @RequestMapping(value = {
+      "/about" }, method = RequestMethod.GET)
   public String about() {
     return aboutService.about();
   }
-  
+
 }
