@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ImportResource;
     "classpath:META-INF/cmdb-api/cxf3.0/*.xml", //
     "classpath:META-INF/dpos-api/route/cxf3.0/sale.xml", //
     "classpath:META-INF/dpos-api/route/cxf3.0/saleReturn.xml", //
+    "classpath:rumba-mq-aliyun.xml", //
 }) //
 public class ApiConfig {
 

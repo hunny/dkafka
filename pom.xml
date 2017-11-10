@@ -29,6 +29,7 @@
     <rumba-commons-biz.version>1.17</rumba-commons-biz.version>
     <rumba-commons-mini.version>1.19</rumba-commons-mini.version>
     <rumba-commons-rs.version>1.10</rumba-commons-rs.version>
+    <rumba-mq.version>1.5.1</rumba-mq.version>
     <swagger2.version>2.7.0</swagger2.version>
   </properties>
 
@@ -62,6 +63,21 @@
       <groupId>com.hd123.rumba.commons</groupId>
       <artifactId>rumba-commons-mini</artifactId>
       <version>${rumba-commons-mini.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.hd123.rumba.mq</groupId>
+      <artifactId>rumba-mq-core</artifactId>
+      <version>${rumba-mq.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.hd123.rumba.mq</groupId>
+      <artifactId>rumba-mq-aliyun</artifactId>
+      <version>${rumba-mq.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.hd123.rumba.mq</groupId>
+      <artifactId>rumba-mq-bus</artifactId>
+      <version>${rumba-mq.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
