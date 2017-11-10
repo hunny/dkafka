@@ -22,10 +22,27 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
+    <cmdb-api.version>0.3</cmdb-api.version>
+    <cxf-rt-rs-client.version>3.0.0-milestone1</cxf-rt-rs-client.version>
+    <dpos-api.version>1.19-SNAPSHOT</dpos-api.version>
+    <rs-api.version>2.0.1</rs-api.version>
+    <rumba-commons-biz.version>1.17</rumba-commons-biz.version>
+    <rumba-commons-mini.version>1.19</rumba-commons-mini.version>
+    <rumba-commons-rs.version>1.10</rumba-commons-rs.version>
     <swagger2.version>2.7.0</swagger2.version>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.fasterxml.jackson.jaxrs</groupId>
+      <artifactId>jackson-jaxrs-json-provider</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>javax.ws.rs-api</artifactId>
+      <version>${rs-api.version}</version>
+    </dependency>
     <dependency>
       <groupId>io.springfox</groupId>
       <artifactId>springfox-swagger2</artifactId>
@@ -35,6 +52,16 @@
       <groupId>io.springfox</groupId>
       <artifactId>springfox-swagger-ui</artifactId>
       <version>${swagger2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.hd123.rumba.commons</groupId>
+      <artifactId>rumba-commons-biz</artifactId>
+      <version>${rumba-commons-biz.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.hd123.rumba.commons</groupId>
+      <artifactId>rumba-commons-mini</artifactId>
+      <version>${rumba-commons-mini.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -54,6 +81,43 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.hd123.dpos</groupId>
+      <artifactId>cmdb-api</artifactId>
+      <version>${cmdb-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.hd123.dpos</groupId>
+      <artifactId>dpos-api</artifactId>
+      <version>${dpos-api.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.hd123.rumba.commons</groupId>
+          <artifactId>rumba-commons-biz</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.hd123.dpos</groupId>
+          <artifactId>cmdb-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.hd123.rumba.commons</groupId>
+      <artifactId>rumba-commons-rs</artifactId>
+      <version>${rumba-commons-rs.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-bundle-jaxrs</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-rs-client</artifactId>
+      <version>${cxf-rt-rs-client.version}</version>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 
