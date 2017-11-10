@@ -1,12 +1,18 @@
 package com.qianfan123.dpos.data;
 
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+import com.qianfan123.dpos.data.service.about.AboutServiceTest;
+import com.qianfan123.dpos.data.web.AboutControllerTest;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-/**
- * Unit test for simple App.
- */
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+    AboutServiceTest.class, AboutControllerTest.class })
 public class ApplicationTest extends TestCase {
   /**
    * Create the test case
