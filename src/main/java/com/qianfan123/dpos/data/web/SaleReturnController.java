@@ -14,6 +14,7 @@ import com.hd123.dpos.api.salereturn.SaleReturnService;
 import com.hd123.rumba.commons.biz.entity.EntityNotFoundException;
 import com.hd123.rumba.commons.lang.Assert;
 import com.qianfan123.dpos.data.common.DkafkaException;
+import com.qianfan123.dpos.data.common.RestResp;
 
 @RestController()
 @RequestMapping(value = "/sale-return", //
@@ -26,7 +27,7 @@ public class SaleReturnController {
 
   @RequestMapping(value = {
       "/get/{shop}" }, method = RequestMethod.GET)
-  public SaleReturn get(@PathVariable String shop, //
+  public RestResp<SaleReturn> get(@PathVariable String shop, //
       @RequestParam("uuid") String uuid) throws DkafkaException {
     Assert.notNull(shop);
     Assert.notNull(uuid);
@@ -34,11 +35,11 @@ public class SaleReturnController {
     try {
       SaleReturn saleReturn = saleReturnService.get(shop, uuid, Sale.ALL_PARTS);
       if (null == saleReturn) {
-        throw new DkafkaException("根据门店[{0}]和UUID[{1}]查询无记录", shop, uuid);
+        throw new DkafkaException("根据门店[{0}]和UUID[{1}]查询SaleReturn无记录", shop, uuid);
       }
-      return saleReturn;
-    } catch (EntityNotFoundException e) {
-      throw new DkafkaException(e);
+      return new RestResp<SaleReturn>(saleReturn);
+    } catch (EntityNotFoundException | DkafkaException e) {
+      return new RestResp(false, e.getMessage());
     }
   }
 

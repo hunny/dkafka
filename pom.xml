@@ -25,6 +25,7 @@
     <cmdb-api.version>0.3</cmdb-api.version>
     <cxf-rt-rs-client.version>3.0.0-milestone1</cxf-rt-rs-client.version>
     <dpos-api.version>1.19-SNAPSHOT</dpos-api.version>
+    <spring-kafka.version>1.2.2.RELEASE</spring-kafka.version>
     <rs-api.version>2.0.1</rs-api.version>
     <rumba-commons-biz.version>1.17</rumba-commons-biz.version>
     <rumba-commons-mini.version>1.19</rumba-commons-mini.version>
@@ -97,6 +98,15 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka-test</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.hd123.dpos</groupId>
