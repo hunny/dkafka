@@ -1,8 +1,8 @@
 package com.qianfan123.dpos.data.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.concurrent.TimeUnit;
+//import static org.assertj.core.api.Assertions.assertThat;
+//
+//import java.util.concurrent.TimeUnit;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
-import org.springframework.kafka.core.KafkaTemplate;
+//import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.MessageListenerContainer;
 import org.springframework.kafka.test.rule.KafkaEmbedded;
 import org.springframework.kafka.test.utils.ContainerTestUtils;
@@ -29,8 +29,8 @@ public class SpringKafkaApplicationTest {
 //  @Autowired
 //  private KafkaReceiver kafkaReceiver;
 
-  @Autowired
-  private KafkaTemplate kafkaTemplate;
+//  @Autowired
+//  private KafkaTemplate kafkaTemplate;
 
   @ClassRule
   public static KafkaEmbedded KAFKA_EMBEDDED = //
