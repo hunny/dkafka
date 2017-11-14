@@ -1,9 +1,16 @@
 package com.qianfan123.dpos.data.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +58,7 @@ public class KafkaController {
   }
 
   @RequestMapping(value = "/send/sale", method = {
-      RequestMethod.GET, RequestMethod.POST })
+      RequestMethod.POST })
   public RestResp<String> sendSale( //
       @RequestParam(name = "topic", defaultValue = "${kafka.topic.name}") String topic, //
       @RequestParam("shop") String shop, //
@@ -69,6 +76,42 @@ public class KafkaController {
       return new RestResp(false, e.getMessage());
     }
 
+  }
+
+//  @RequestMapping(value = "/consumer/check", method = {
+//      RequestMethod.GET })
+  public RestResp<String> consumer( //
+      @RequestParam(name = "server", defaultValue = "${kafka.bootstrap-servers}") String server, //
+      @RequestParam(name = "topic", defaultValue = "${kafka.topic.name}") String topic, //
+      @RequestParam(name = "group.id", defaultValue = "test") String groupId) //
+      throws DkafkaException {
+    Assert.hasText(server);
+    Assert.hasText(topic);
+
+    Properties props = new Properties();
+    props.put("bootstrap.servers", server);// 服务器ip:端口号，集群用逗号分隔
+    props.put("group.id", groupId);
+    props.put("enable.auto.commit", "false");
+    props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+    props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+    KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
+    consumer.subscribe(Arrays.asList(topic));
+    int minBatchSize = 200;
+    List<ConsumerRecord<String, String>> buffer = new ArrayList<ConsumerRecord<String, String>>();
+    while (true) {
+      ConsumerRecords<String, String> records = consumer.poll(100);
+      for (ConsumerRecord<String, String> record : records) {
+        buffer.add(record);
+        logger.info("从kafka接收到的消息是：offset='{}', key='{}',value='{}'", //
+            record.offset(), record.key(), record.value());
+      }
+      if (buffer.size() >= minBatchSize) {
+        consumer.commitSync();
+        break;
+      }
+    }
+    consumer.close();
+    return new RestResp<String>("OK");
   }
 
 }
