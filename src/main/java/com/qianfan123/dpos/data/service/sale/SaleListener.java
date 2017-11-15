@@ -5,13 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import com.hd123.dpos.api.commons.DposMessageSyntaxException;
 import com.hd123.rumba.commons.json.JsonObject;
 import com.hd123.rumba.mq.api.QueueMessage;
 import com.hd123.rumba.mq.bus.MessageListener;
+import com.qianfan123.dpos.data.service.KafakaSenderService;
 
 @Component
 public class SaleListener implements MessageListener<QueueMessage> {
@@ -22,10 +22,7 @@ public class SaleListener implements MessageListener<QueueMessage> {
   private KafkaSaleService kafkaSaleService;
 
   @Autowired
-  private KafkaTemplate kafkaTemplate;
-
-  @Value("${kafka.topic.name}")
-  private String topic;
+  private KafakaSenderService kafakaSenderService;
 
   @Value("${kafka.rumbamq.message.ignore:false}")
   private boolean ignore;
@@ -57,8 +54,9 @@ public class SaleListener implements MessageListener<QueueMessage> {
       }
 
       String value = kafkaSaleService.getAsString(shop, uuid);
-      logger.debug("准备向[{}]发送消息，key[{}], value[{}]", topic, shop, value);
-      kafkaTemplate.send(topic, shop, value);
+      logger.debug("准备向[{}]发送消息，key[{}], value[{}]", //
+          kafakaSenderService.getTopic(), shop, value);
+      kafakaSenderService.send(shop, value);
 
     } catch (Exception e) {
       if (e instanceof DposMessageSyntaxException) {

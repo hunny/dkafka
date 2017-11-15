@@ -25,10 +25,12 @@
     <cmdb-api.version>0.3</cmdb-api.version>
     <cxf-rt-rs-client.version>3.0.0-milestone1</cxf-rt-rs-client.version>
     <dpos-api.version>1.19-SNAPSHOT</dpos-api.version>
+    <druid.version>1.0.21</druid.version>
     <quartz.version>2.3.0</quartz.version>
     <spring-kafka.version>1.2.2.RELEASE</spring-kafka.version>
     <rs-api.version>2.0.1</rs-api.version>
     <rumba-commons-biz.version>1.17</rumba-commons-biz.version>
+    <rumba-commons-jdbc.version>1.5.1</rumba-commons-jdbc.version>
     <rumba-commons-mini.version>1.19</rumba-commons-mini.version>
     <rumba-commons-rs.version>1.10</rumba-commons-rs.version>
     <rumba-mq.version>1.5.1</rumba-mq.version>
@@ -36,6 +38,11 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid</artifactId>
+      <version>${druid.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.jaxrs</groupId>
       <artifactId>jackson-jaxrs-json-provider</artifactId>
@@ -68,6 +75,11 @@
     </dependency>
     <dependency>
       <groupId>com.hd123.rumba.commons</groupId>
+      <artifactId>rumba-commons-jdbc</artifactId>
+      <version>${rumba-commons-jdbc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.hd123.rumba.commons</groupId>
       <artifactId>rumba-commons-mini</artifactId>
       <version>${rumba-commons-mini.version}</version>
     </dependency>
@@ -92,13 +104,17 @@
       <version>${quartz.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <optional>true</optional>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-cache</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

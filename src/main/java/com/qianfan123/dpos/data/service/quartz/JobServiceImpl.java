@@ -3,6 +3,8 @@ package com.qianfan123.dpos.data.service.quartz;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
@@ -14,20 +16,29 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 import com.qianfan123.dpos.data.common.DkafkaException;
-import com.qianfan123.dpos.data.quartz.AboutJob;
 
 @Service
-public class JobServiceImpl implements JobService {
+public class JobServiceImpl implements JobService, ApplicationContextAware {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
 
   private final Scheduler scheduler;
 
+  private ApplicationContext applicationContext;
+
   public JobServiceImpl(Scheduler scheduler) {
     this.scheduler = scheduler;
+  }
+
+  @PostConstruct
+  public void init() throws SchedulerException {
+    this.scheduler.getContext().put(APPLICATION_CONTEXT, applicationContext);
   }
 
   @Override
@@ -37,7 +48,7 @@ public class JobServiceImpl implements JobService {
     logger.debug("start job group '{}', name '{}', replace '{}', job class '{}', data '{}'", //
         group, name, replace, clazz.getName(), jobDataMap);
 
-    JobDetail jobDetail = JobBuilder.newJob(AboutJob.class) //
+    JobDetail jobDetail = JobBuilder.newJob(clazz) //
         .withIdentity(name, group) //
         .usingJobData(jobDataMap) //
         .build();
@@ -61,6 +72,11 @@ public class JobServiceImpl implements JobService {
       throw new DkafkaException(e);
     }
 
+  }
+
+  @Override
+  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.applicationContext = applicationContext;
   }
 
 }

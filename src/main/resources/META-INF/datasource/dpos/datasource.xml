@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+  <bean id="dkafka-dpos-service.log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+    <property name="statementExecutableSqlLogEnable" value="true" />
+    <property name="statementCreateAfterLogEnabled" value="false" />
+    <property name="statementPrepareAfterLogEnabled" value="false" />
+    <property name="statementPrepareCallAfterLogEnabled" value="false" />
+    <property name="statementExecuteAfterLogEnabled" value="false" />
+    <property name="statementExecuteQueryAfterLogEnabled"
+      value="false" />
+    <property name="statementExecuteUpdateAfterLogEnabled"
+      value="false" />
+    <property name="statementExecuteBatchAfterLogEnabled"
+      value="false" />
+    <property name="statementCloseAfterLogEnabled" value="false" />
+    <property name="statementParameterSetLogEnabled" value="false" />
+  </bean>
+
+  <bean id="dkafka-dpos-service.stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+    <property name="slowSqlMillis" value="3000" />
+    <property name="logSlowSql" value="true" />
+  </bean>
+
+  <bean id="dkafka-dpos-service.dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+    init-method="init" destroy-method="close">
+    <property name="url"
+      value="${dkafka-dpos-service.dataSource.url:databaseurl}" />
+    <property name="username"
+      value="${dkafka-dpos-service.dataSource.username:yourusername}" />
+    <property name="password"
+      value="${dkafka-dpos-service.dataSource.password:yourpassword}" />
+    <property name="initialSize"
+      value="${dkafka-dpos-service.dataSource.initialSize:1}" />
+    <property name="minIdle"
+      value="${dkafka-dpos-service.dataSource.minIdle:1}" />
+    <property name="maxActive"
+      value="${dkafka-dpos-service.dataSource.maxActive:300}" />
+    <property name="timeBetweenEvictionRunsMillis"
+      value="${dkafka-dpos-service.dataSource.timeBetweenEvictionRunsMillis:5000}" />
+    <property name="minEvictableIdleTimeMillis"
+      value="${dkafka-dpos-service.dataSource.minEvictableIdleTimeMillis:30000}" />
+    <property name="validationQuery"
+      value="${dkafka-dpos-service.dataSource.validationQuery:SELECT 1}" />
+    <property name="testOnBorrow"
+      value="${dkafka-dpos-service.dataSource.testOnBorrow:true}" />
+    <property name="testOnReturn"
+      value="${dkafka-dpos-service.dataSource.testOnReturn:false}" />
+    <property name="testWhileIdle"
+      value="${dkafka-dpos-service.dataSource.testWhileIdle:true}" />
+    <property name="logAbandoned"
+      value="${dkafka-dpos-service.dataSource.logAbandoned:true}" />
+    <property name="removeAbandoned"
+      value="${dkafka-dpos-service.dataSource.removeAbandoned:true}" />
+    <property name="removeAbandonedTimeout"
+      value="${dkafka-dpos-service.dataSource.removeAbandonedTimeout:60}" />
+    <property name="proxyFilters">
+      <list>
+        <ref bean="dkafka-dpos-service.log-filter" />
+        <ref bean="dkafka-dpos-service.stat-filter" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="dkafka-dpos-service.jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <property name="dataSource" ref="dkafka-dpos-service.dataSource" />
+  </bean>
+
+  <bean id="dkafka-dpos-service.txManager"
+    class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dkafka-dpos-service.dataSource" />
+    <qualifier value="rumba-mq-reliableevent.txManager" />
+  </bean>
+
+  <tx:annotation-driven proxy-target-class="true"
+    transaction-manager="dkafka-dpos-service.txManager" />
+
+</beans>

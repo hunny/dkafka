@@ -17,6 +17,12 @@ public class KafkaSenderConfig {
 
   @Value("${kafka.bootstrap-servers}")
   private String bootstrapServers;
+  
+  @Value("${kafka.compression.type:none}") // default:none, option:gzip,snappy,lz4
+  private String compressionType;
+  
+  @Value("${kafka.max.request.size:10485760}") // 10 * 1024 * 1024 = 10M
+  private Integer maxRequestSize;
 
   @Bean
   public Map<String, Object> producerConfigs() {
@@ -26,8 +32,8 @@ public class KafkaSenderConfig {
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
     props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-    props.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, 10 * 1024 * 1024);
-    props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
+    props.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, maxRequestSize);
+    props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, compressionType);
 
     return props;
   }
