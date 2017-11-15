@@ -25,6 +25,7 @@
     <cmdb-api.version>0.3</cmdb-api.version>
     <cxf-rt-rs-client.version>3.0.0-milestone1</cxf-rt-rs-client.version>
     <dpos-api.version>1.19-SNAPSHOT</dpos-api.version>
+    <quartz.version>2.3.0</quartz.version>
     <spring-kafka.version>1.2.2.RELEASE</spring-kafka.version>
     <rs-api.version>2.0.1</rs-api.version>
     <rumba-commons-biz.version>1.17</rumba-commons-biz.version>
@@ -56,6 +57,11 @@
       <version>${swagger2.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>com.hd123.rumba.commons</groupId>
       <artifactId>rumba-commons-biz</artifactId>
       <version>${rumba-commons-biz.version}</version>
@@ -81,6 +87,20 @@
       <version>${rumba-mq.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.quartz-scheduler</groupId>
+      <artifactId>quartz</artifactId>
+      <version>${quartz.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
@@ -98,6 +118,10 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.kafka</groupId>
