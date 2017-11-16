@@ -1,4 +1,4 @@
-package com.qianfan123.dpos.data.config;
+package com.qianfan123.dpos.data.config.kafka;
 
 import java.util.HashMap;
 import java.util.Map;

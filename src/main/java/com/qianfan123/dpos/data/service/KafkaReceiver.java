@@ -16,7 +16,7 @@ public class KafkaReceiver {
   
   @KafkaListener(topics = "${kafka.topic.name}")
   public void receive(ConsumerRecord data) {
-    logger.info("Enviroment '{}', received payload = '{}'", //
+    logger.debug("Enviroment '{}', received payload = '{}'", //
         environment.getActiveProfiles(), data);
   }
 

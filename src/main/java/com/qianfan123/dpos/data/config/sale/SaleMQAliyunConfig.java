@@ -1,4 +1,4 @@
-package com.qianfan123.dpos.data.config;
+package com.qianfan123.dpos.data.config.sale;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

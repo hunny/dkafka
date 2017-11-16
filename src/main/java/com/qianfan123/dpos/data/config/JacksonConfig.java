@@ -21,6 +21,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.hd123.dpos.api.sale.Sale;
 import com.hd123.dpos.api.salereturn.SaleReturn;
 import com.hd123.rumba.commons.biz.entity.Nsid;
+import com.qianfan123.dpos.data.config.date.DateDeserializer;
+import com.qianfan123.dpos.data.config.date.DateSerializer;
+import com.qianfan123.dpos.data.config.date.LocalDateTimeDeserializer;
 
 @Configuration
 public class JacksonConfig {
