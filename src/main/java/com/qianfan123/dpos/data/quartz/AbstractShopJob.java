@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import com.hd123.rumba.commons.lang.Assert;
-import com.qianfan123.dpos.data.common.DkafkaException;
 import com.qianfan123.dpos.data.dao.AbstraceBatchQueryService.BatchHandler;
 import com.qianfan123.dpos.data.dao.QueryBatchable;
 import com.qianfan123.dpos.data.dao.ShopService;
@@ -26,8 +25,10 @@ public abstract class AbstractShopJob implements Job {
   @Autowired
   private ShopService shopService;
 
-  @Autowired
-  private JobService jobService;
+//  @Autowired
+//  private JobService jobService;
+  
+  private AbstractUuidSenderService abstractUuidSenderService;
 
   private QueryBatchable queryBatchable;
 
@@ -43,10 +44,11 @@ public abstract class AbstractShopJob implements Job {
       logger.error("{}", e.getMessage());
       throw new JobExecutionException(e);
     }
-    logger.info("Dynamic Schedule Job Success. {}", arg0);
-    logger.info("Dynamic jobDateMap {}", jobDateMap);
+    logger.info("Schedule Job Success. {}", arg0);
+    logger.info("jobDateMap {}", jobDateMap);
     if (null == queryBatchable) {
       queryBatchable = applicationContext.getBean(getBatchableClass());
+      abstractUuidSenderService = applicationContext.getBean(getUuidSenderClass());
     }
     shopService.handle(new BatchHandler() {
       @Override
@@ -56,15 +58,16 @@ public abstract class AbstractShopJob implements Job {
         String dbName = strings[0];
         logger.debug("处理数据库[{}]的所有门店信息。", dbName);
         for (String shop : shops) {
-          JobDataMap JobDataMap = new JobDataMap();
-          JobDataMap.put(ShopService.DB_NAME, dbName);
-          JobDataMap.put(ShopService.SHOP_ID, shop);
-          try {
-            jobService.startNow(shop, dbName, JobDataMap, getUuidJobClass(), false);
-          } catch (DkafkaException e) {
-            e.printStackTrace();
-            logger.error("启动数据库[{}]门店[{}]的处理任务失败:{}。", dbName, shop, e.getMessage());
-          }
+//          JobDataMap JobDataMap = new JobDataMap();
+//          JobDataMap.put(ShopService.DB_NAME, dbName);
+//          JobDataMap.put(ShopService.SHOP_ID, shop);
+          abstractUuidSenderService.execute(dbName, shop);
+//          try {
+//            jobService.startNow(shop, dbName, JobDataMap, getUuidJobClass(), true);
+//          } catch (DkafkaException e) {
+//            e.printStackTrace();
+//            logger.error("启动数据库[{}]门店[{}]的处理任务失败:{}。", dbName, shop, e.getMessage());
+//          }
         }
       }
     }, queryBatchable);
@@ -72,6 +75,8 @@ public abstract class AbstractShopJob implements Job {
 
   public abstract Class<? extends QueryBatchable> getBatchableClass();
 
-  public abstract Class<? extends Job> getUuidJobClass();
+//  public abstract Class<? extends Job> getUuidJobClass();
+  
+  public abstract Class<? extends AbstractUuidSenderService> getUuidSenderClass();
 
 }

@@ -1,10 +1,9 @@
 package com.qianfan123.dpos.data.quartz.salereturn;
 
-import org.quartz.Job;
-
 import com.qianfan123.dpos.data.dao.QueryBatchable;
 import com.qianfan123.dpos.data.dao.salereturn.SaleReturnShopQueryBatchableImpl;
 import com.qianfan123.dpos.data.quartz.AbstractShopJob;
+import com.qianfan123.dpos.data.quartz.AbstractUuidSenderService;
 
 public class SaleReturnShopJob extends AbstractShopJob {
 
@@ -14,8 +13,13 @@ public class SaleReturnShopJob extends AbstractShopJob {
   }
 
   @Override
-  public Class<? extends Job> getUuidJobClass() {
-    return SaleReturnUuidJob.class;
+  public Class<? extends AbstractUuidSenderService> getUuidSenderClass() {
+    return SaleReturnUuidSenderService.class;
   }
+
+//  @Override
+//  public Class<? extends Job> getUuidJobClass() {
+//    return SaleReturnUuidSenderJob.class;
+//  }
 
 }

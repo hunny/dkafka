@@ -10,7 +10,7 @@ import com.qianfan123.dpos.data.dao.salereturn.SaleReturnUuidHandleService;
 import com.qianfan123.dpos.data.quartz.AbstractUuidJob;
 import com.qianfan123.dpos.data.service.salereturn.KafkaSaleReturnService;
 
-public class SaleReturnUuidJob extends AbstractUuidJob {
+public class SaleReturnUuidSenderJob extends AbstractUuidJob {
 
   @Autowired
   private KafkaSaleReturnService kafkaSaleReturnService;

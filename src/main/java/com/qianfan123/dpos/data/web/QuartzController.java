@@ -19,9 +19,9 @@ import com.hd123.rumba.commons.lang.Assert;
 import com.qianfan123.dpos.data.common.DkafkaException;
 import com.qianfan123.dpos.data.dao.ShopService;
 import com.qianfan123.dpos.data.quartz.sale.SaleShopJob;
-import com.qianfan123.dpos.data.quartz.sale.SaleUuidJob;
+import com.qianfan123.dpos.data.quartz.sale.SaleUuidSenderJob;
 import com.qianfan123.dpos.data.quartz.salereturn.SaleReturnShopJob;
-import com.qianfan123.dpos.data.quartz.salereturn.SaleReturnUuidJob;
+import com.qianfan123.dpos.data.quartz.salereturn.SaleReturnUuidSenderJob;
 import com.qianfan123.dpos.data.service.quartz.JobService;
 
 @RestController
@@ -90,7 +90,7 @@ public class QuartzController {
     JobDataMap jobDataMap = new JobDataMap();
     jobDataMap.put(ShopService.DB_NAME, dbName);
     jobDataMap.put(ShopService.SHOP_ID, shop);
-    jobService.startNow(name, group, jobDataMap, SaleUuidJob.class, replace);
+    jobService.startNow(name, group, jobDataMap, SaleUuidSenderJob.class, replace);
     
     return ResponseEntity.noContent().build();
   }
@@ -123,7 +123,7 @@ public class QuartzController {
     JobDataMap jobDataMap = new JobDataMap();
     jobDataMap.put(ShopService.DB_NAME, dbName);
     jobDataMap.put(ShopService.SHOP_ID, shop);
-    jobService.startNow(name, group, jobDataMap, SaleReturnUuidJob.class, replace);
+    jobService.startNow(name, group, jobDataMap, SaleReturnUuidSenderJob.class, replace);
     
     return ResponseEntity.noContent().build();
   }
