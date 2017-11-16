@@ -10,7 +10,6 @@ import com.qianfan123.dpos.data.dao.sale.SaleUuidHandleService;
 import com.qianfan123.dpos.data.quartz.AbstractUuidJob;
 import com.qianfan123.dpos.data.service.sale.KafkaSaleService;
 
-@Deprecated
 public class SaleUuidSenderJob extends AbstractUuidJob {
 
   @Autowired
