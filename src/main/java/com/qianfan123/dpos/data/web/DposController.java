@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.qianfan123.dpos.data.common.DkafkaException;
 import com.qianfan123.dpos.data.common.RestResp;
-import com.qianfan123.dpos.data.dao.AbstraceBatchQueryService.Handler;
-import com.qianfan123.dpos.data.dao.sale.SaleShopInquirableImpl;
+import com.qianfan123.dpos.data.dao.AbstraceBatchQueryService.BatchHandler;
+import com.qianfan123.dpos.data.dao.sale.SaleShopQueryBatchableImpl;
 import com.qianfan123.dpos.data.dao.DbCommonDao;
-import com.qianfan123.dpos.data.dao.Inquirable;
+import com.qianfan123.dpos.data.dao.QueryBatchable;
 import com.qianfan123.dpos.data.dao.ShopService;
 
 @RestController
@@ -37,11 +37,11 @@ public class DposController implements ApplicationContextAware {
 
   private ApplicationContext applicationContext;
 
-  private Inquirable saleShopListable;
+  private QueryBatchable saleShopBatchable;
 
   @PostConstruct
   public void init() {
-    saleShopListable = this.applicationContext.getBean(SaleShopInquirableImpl.class);
+    saleShopBatchable = this.applicationContext.getBean(SaleShopQueryBatchableImpl.class);
   }
 
   @RequestMapping(value = {
@@ -57,12 +57,12 @@ public class DposController implements ApplicationContextAware {
       method = RequestMethod.GET)
   public RestResp<List<String>> getAllShops(@PathVariable String db) throws DkafkaException {
     final List<String> list = new ArrayList<>();
-    shopService.handleBy(new Handler() {
+    shopService.handleBy(new BatchHandler() {
       @Override
       public void handle(List<String> shops, String...strings) {
         list.addAll(shops);
       }
-    }, saleShopListable, db);
+    }, saleShopBatchable, db);
     return new RestResp<List<String>>(list);
   }
 

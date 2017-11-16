@@ -14,10 +14,10 @@ import org.springframework.context.ApplicationContext;
 
 import com.hd123.rumba.commons.lang.Assert;
 import com.qianfan123.dpos.data.common.DkafkaException;
-import com.qianfan123.dpos.data.dao.AbstraceBatchQueryService.Handler;
-import com.qianfan123.dpos.data.dao.Inquirable;
+import com.qianfan123.dpos.data.dao.AbstraceBatchQueryService.BatchHandler;
+import com.qianfan123.dpos.data.dao.QueryBatchable;
 import com.qianfan123.dpos.data.dao.ShopService;
-import com.qianfan123.dpos.data.dao.sale.SaleShopInquirableImpl;
+import com.qianfan123.dpos.data.dao.sale.SaleShopQueryBatchableImpl;
 import com.qianfan123.dpos.data.service.quartz.JobService;
 
 public class SaleShopJob implements Job {
@@ -30,7 +30,7 @@ public class SaleShopJob implements Job {
   @Autowired
   private JobService jobService;
 
-  private Inquirable inquirable;
+  private QueryBatchable queryBatchable;
 
   @Override
   public void execute(JobExecutionContext arg0) throws JobExecutionException {
@@ -44,12 +44,12 @@ public class SaleShopJob implements Job {
       logger.error("{}", e.getMessage());
       throw new JobExecutionException(e);
     }
-    logger.info("Demo Dynamic Schedule Job Success. {}", arg0);
-    logger.info("Demo Dynamic jobDateMap {}", jobDateMap);
-    if (null == inquirable) {
-      inquirable = applicationContext.getBean(SaleShopInquirableImpl.class);
+    logger.info("Dynamic Schedule Job Success. {}", arg0);
+    logger.info("Dynamic jobDateMap {}", jobDateMap);
+    if (null == queryBatchable) {
+      queryBatchable = applicationContext.getBean(SaleShopQueryBatchableImpl.class);
     }
-    shopService.handle(new Handler() {
+    shopService.handle(new BatchHandler() {
       @Override
       public void handle(List<String> shops, String... strings) {
         Assert.notEmpty(strings);
@@ -68,7 +68,7 @@ public class SaleShopJob implements Job {
           }
         }
       }
-    }, inquirable);
+    }, queryBatchable);
   }
 
 }

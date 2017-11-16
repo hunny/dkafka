@@ -18,13 +18,13 @@ public class ShopService extends AbstraceBatchQueryService {
    * @param handler
    * @param shopListable, 产生shops依赖查询
    */
-  public void handle(Handler handler, Inquirable shopListable) {
+  public void handle(BatchHandler handler, QueryBatchable queryBatchable) {
     if (null == handler) {
       return;
     }
     List<String> dbs = dbCommonDao.getShopDbNames();
     for (final String db : dbs) {
-      handleBy(handler, shopListable, db);
+      handleBy(handler, queryBatchable, db);
     }
   }
 

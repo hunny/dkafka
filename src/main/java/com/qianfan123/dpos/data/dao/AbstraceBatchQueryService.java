@@ -14,14 +14,14 @@ import org.springframework.context.ApplicationContextAware;
 public abstract class AbstraceBatchQueryService implements ApplicationContextAware {
 
   private ApplicationContext applicationContext;
-  
+
   @Value("${dkafka-dpos-service.shop.query.pagesize:1000}")
   private Integer limit;
 
-  public void handleBy(Handler handler, Inquirable inquirable, String... params) {
+  public void handleBy(BatchHandler handler, QueryBatchable queryBatchable, String... params) {
     int offset = 0;
     do {
-      List<String> elems = list(offset, limit, inquirable, params);
+      List<String> elems = list(offset, limit, queryBatchable, params);
       offset += limit;
       if (null == elems || elems.isEmpty()) {
         break;
@@ -30,9 +30,10 @@ public abstract class AbstraceBatchQueryService implements ApplicationContextAwa
     } while (true);
   }
 
-  public List<String> list(int offset, Integer limit, Inquirable inquirable, String... params) {
+  public List<String> list(int offset, Integer limit, QueryBatchable queryBatchable,
+      String... params) {
     List<String> result = new ArrayList<>();
-    List<String> elems = inquirable.listBy(offset, limit, params);
+    List<String> elems = queryBatchable.listBy(offset, limit, params);
     if (null != elems && !elems.isEmpty()) {
       result.addAll(elems);
     }
@@ -51,7 +52,7 @@ public abstract class AbstraceBatchQueryService implements ApplicationContextAwa
     this.applicationContext = applicationContext;
   }
 
-  public static interface Handler {
+  public static interface BatchHandler {
     void handle(List<String> elems, String... strings);
   }
 

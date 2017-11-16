@@ -7,6 +7,7 @@ import org.quartz.JobDataMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hd123.rumba.commons.lang.Assert;
 import com.qianfan123.dpos.data.common.DkafkaException;
+import com.qianfan123.dpos.data.dao.ShopService;
+import com.qianfan123.dpos.data.quartz.sale.SaleShopJob;
+import com.qianfan123.dpos.data.quartz.sale.SaleUuidJob;
 import com.qianfan123.dpos.data.service.quartz.JobService;
 
 @RestController
@@ -53,6 +57,39 @@ public class QuartzController {
 
     jobService.startNow(name, group, jobDataMap, clazz, replace);
 
+    return ResponseEntity.noContent().build();
+  }
+  
+  @GetMapping(path = "/start/{group}/all/shop/sale/{name}/{replace}")
+  public ResponseEntity<Void> startAllShopSale(@PathVariable String group, //
+      @PathVariable("name") String name, //
+      @PathVariable("replace") boolean replace) throws DkafkaException {
+
+    logger.debug("start job group '{}', name '{}', replace '{}', job class '{}', data '{}'", //
+        group, name, replace);
+
+    JobDataMap jobDataMap = new JobDataMap();
+
+    jobService.startNow(name, group, jobDataMap, SaleShopJob.class, replace);
+
+    return ResponseEntity.noContent().build();
+  }
+  
+  @GetMapping(path = "/start/{group}/shop/sale/{name}/{replace}/{dbName}/{shop}")
+  public ResponseEntity<Void> startShopSaleByDbName(@PathVariable String group, //
+      @PathVariable("name") String name, //
+      @PathVariable("replace") boolean replace, //
+      @PathVariable("dbName") String dbName, //
+      @PathVariable("shop") String shop) throws DkafkaException {
+    
+    logger.debug("start job group '{}', name '{}', replace '{}', job class '{}', data '{}'", //
+        group, name, replace);
+    
+    JobDataMap jobDataMap = new JobDataMap();
+    jobDataMap.put(ShopService.DB_NAME, dbName);
+    jobDataMap.put(ShopService.SHOP_ID, shop);
+    jobService.startNow(name, group, jobDataMap, SaleUuidJob.class, replace);
+    
     return ResponseEntity.noContent().build();
   }
 
