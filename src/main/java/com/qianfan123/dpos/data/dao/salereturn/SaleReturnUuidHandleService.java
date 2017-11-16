@@ -1,4 +1,4 @@
-package com.qianfan123.dpos.data.dao.sale;
+package com.qianfan123.dpos.data.dao.salereturn;
 
 import javax.annotation.PostConstruct;
 
@@ -9,21 +9,22 @@ import com.qianfan123.dpos.data.dao.QueryBatchable;
 import com.qianfan123.dpos.data.dao.UuidHandleService;
 
 @Component
-public class SaleUuidService extends AbstraceBatchQueryService implements UuidHandleService {
+public class SaleReturnUuidHandleService extends AbstraceBatchQueryService implements UuidHandleService {
 
-  private QueryBatchable saleUuidQueryBatchable;
-  
+  private QueryBatchable saleReturnUuidQueryBatchable;
+
   @PostConstruct
   public void init() {
-    saleUuidQueryBatchable = this.getApplicationContext().getBean(SaleUuidQueryBatchableImpl.class);
+    saleReturnUuidQueryBatchable = this.getApplicationContext()
+        .getBean(SaleReturnUuidQueryBatchableImpl.class);
   }
-  
+
   @Override
   public void handle(BatchHandler handler, String dbName, String shop) {
     if (null == handler) {
       return;
     }
-    handleBy(handler, saleUuidQueryBatchable, dbName, shop);
+    handleBy(handler, saleReturnUuidQueryBatchable, dbName, shop);
   }
 
 }

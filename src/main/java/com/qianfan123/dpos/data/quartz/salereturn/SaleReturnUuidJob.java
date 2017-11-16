@@ -1,4 +1,4 @@
-package com.qianfan123.dpos.data.quartz.sale;
+package com.qianfan123.dpos.data.quartz.salereturn;
 
 import java.io.IOException;
 
@@ -6,23 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.qianfan123.dpos.data.common.DkafkaException;
 import com.qianfan123.dpos.data.dao.UuidHandleService;
-import com.qianfan123.dpos.data.dao.sale.SaleUuidService;
+import com.qianfan123.dpos.data.dao.salereturn.SaleReturnUuidHandleService;
 import com.qianfan123.dpos.data.quartz.AbstractUuidJob;
-import com.qianfan123.dpos.data.service.sale.KafkaSaleService;
+import com.qianfan123.dpos.data.service.salereturn.KafkaSaleReturnService;
 
-public class SaleUuidJob extends AbstractUuidJob {
+public class SaleReturnUuidJob extends AbstractUuidJob {
 
   @Autowired
-  private KafkaSaleService kafkaSaleService;
+  private KafkaSaleReturnService kafkaSaleReturnService;
 
   @Override
   public Class<? extends UuidHandleService> getUuidHandleClass() {
-    return SaleUuidService.class;
+    return SaleReturnUuidHandleService.class;
   }
 
   @Override
   public String getAsString(String shop, String uuid) throws DkafkaException, IOException {
-    return kafkaSaleService.getAsString(shop, uuid);
+    return kafkaSaleReturnService.getAsString(shop, uuid);
   }
 
 }

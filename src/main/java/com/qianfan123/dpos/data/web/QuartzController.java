@@ -20,6 +20,8 @@ import com.qianfan123.dpos.data.common.DkafkaException;
 import com.qianfan123.dpos.data.dao.ShopService;
 import com.qianfan123.dpos.data.quartz.sale.SaleShopJob;
 import com.qianfan123.dpos.data.quartz.sale.SaleUuidJob;
+import com.qianfan123.dpos.data.quartz.salereturn.SaleReturnShopJob;
+import com.qianfan123.dpos.data.quartz.salereturn.SaleReturnUuidJob;
 import com.qianfan123.dpos.data.service.quartz.JobService;
 
 @RestController
@@ -89,6 +91,39 @@ public class QuartzController {
     jobDataMap.put(ShopService.DB_NAME, dbName);
     jobDataMap.put(ShopService.SHOP_ID, shop);
     jobService.startNow(name, group, jobDataMap, SaleUuidJob.class, replace);
+    
+    return ResponseEntity.noContent().build();
+  }
+  
+  @GetMapping(path = "/start/{group}/all/shop/sale-return/{name}/{replace}")
+  public ResponseEntity<Void> startAllShopSaleReturn(@PathVariable String group, //
+      @PathVariable("name") String name, //
+      @PathVariable("replace") boolean replace) throws DkafkaException {
+
+    logger.debug("start job group '{}', name '{}', replace '{}', job class '{}', data '{}'", //
+        group, name, replace);
+
+    JobDataMap jobDataMap = new JobDataMap();
+
+    jobService.startNow(name, group, jobDataMap, SaleReturnShopJob.class, replace);
+
+    return ResponseEntity.noContent().build();
+  }
+  
+  @GetMapping(path = "/start/{group}/shop/sale-return/{name}/{replace}/{dbName}/{shop}")
+  public ResponseEntity<Void> startShopSaleReturnByDbName(@PathVariable String group, //
+      @PathVariable("name") String name, //
+      @PathVariable("replace") boolean replace, //
+      @PathVariable("dbName") String dbName, //
+      @PathVariable("shop") String shop) throws DkafkaException {
+    
+    logger.debug("start job group '{}', name '{}', replace '{}', job class '{}', data '{}'", //
+        group, name, replace);
+    
+    JobDataMap jobDataMap = new JobDataMap();
+    jobDataMap.put(ShopService.DB_NAME, dbName);
+    jobDataMap.put(ShopService.SHOP_ID, shop);
+    jobService.startNow(name, group, jobDataMap, SaleReturnUuidJob.class, replace);
     
     return ResponseEntity.noContent().build();
   }
