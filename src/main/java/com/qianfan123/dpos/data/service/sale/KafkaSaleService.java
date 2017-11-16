@@ -31,11 +31,10 @@ public class KafkaSaleService {
       throw new DkafkaException("根据门店[{0}]和UUID[{1}]查询Sale无记录", shop, uuid);
     }
 
-    String value = objectMapper.writeValueAsString(sale);
-    KafkaSale kafkaSale = objectMapper.readValue(value, KafkaSale.class);
+    KafkaSale kafkaSale = KafkaSale.TO.convert(sale);
     kafkaSale.set_dcbustype("sale");
 
-    value = objectMapper.writeValueAsString(kafkaSale);
+    String value = objectMapper.writeValueAsString(kafkaSale);
     return value;
   }
 
