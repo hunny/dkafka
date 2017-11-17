@@ -2,6 +2,7 @@ package com.qianfan123.dpos.data.quartz.sale;
 
 import java.io.IOException;
 
+import org.quartz.DisallowConcurrentExecution;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.qianfan123.dpos.data.common.DkafkaException;
@@ -10,6 +11,7 @@ import com.qianfan123.dpos.data.dao.sale.SaleUuidHandleService;
 import com.qianfan123.dpos.data.quartz.AbstractUuidJob;
 import com.qianfan123.dpos.data.service.sale.KafkaSaleService;
 
+@DisallowConcurrentExecution
 public class SaleUuidSenderJob extends AbstractUuidJob {
 
   @Autowired
